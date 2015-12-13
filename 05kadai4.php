@@ -17,9 +17,9 @@ if(!isset($_SESSION["login"])){
     
     if(!isset($_SESSION["second"])){
         
-        echo "2回目のアクセス日時は".$_SESSION["login"];
+        echo "1回目のアクセス日時は".$_SESSION["login"];
         
-        $_SESSION["visited"] = 2;
+        $_SESSION["visited"] = 1;
         
     }else{
         

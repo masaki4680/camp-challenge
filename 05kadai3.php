@@ -21,9 +21,9 @@ if (!isset($_COOKIE["Lastlogintime"])){//初回アクセス時
         
         $last_login_time = $_COOKIE["Lastlogintime"];
     
-    echo "2回目のアクセス時は".$last_login_time;
+    echo "1回目のアクセス時は".$last_login_time;
         
-        $number=2;
+        $number=1;
     
     }else{//nexttimeがあるとき
         
