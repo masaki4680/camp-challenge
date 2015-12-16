@@ -5,7 +5,7 @@
 
 <?php
 $stamp = mktime(10,0,0,11,4,2016);
-    $today = date('Y年m月d日 H時i分S秒',$stamp);
+    $today = date('Y-m-d H:i:s',$stamp);
 
 echo $today;
 ?>

@@ -5,7 +5,7 @@
 <?php
 
 
-$day = date('Y年m月d日H時i分s秒');
+$day = date('Y-m-d H:i:s');
 echo $day;
 
 ?>

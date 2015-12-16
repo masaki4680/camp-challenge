@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
-<meta charset="utf-8">
-</html>
+    <meta charset="utf-8">
+<body>
 <?php
 //課題1,4
 if(my_profile(true)){
@@ -37,5 +37,9 @@ function check_number($number)
 		echo"奇数です。";
 	}
 }
-
 ?>
+
+
+    </body>
+
+</html>
