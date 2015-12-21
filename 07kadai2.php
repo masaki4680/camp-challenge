@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="shift_jis">
     </head>
     <body>
 
@@ -12,10 +12,10 @@ require_once("07kadai1.php");
 
 $pdo=connectDb();
 //is_string,与えられた情報が文字列かどうか確認する
-if(!(is_string($pdo))){
+if(is_string($pdo)){
 //    return $pdo;
-}else{
     echo $pdo;
+    exit;
 }
 
 $sql = "INSERT INTO profiles(profilesID,name,tell,age,birthday)VALUES(:profilesID,:name,:tell,:age,:birthday)";
@@ -33,17 +33,14 @@ $stmt->execute();
 
 //$連想配列の入れ物=$ステートメントハンドラ->fetch(PDO::FETCH_ASSOC);で取り出せる
 $sql2="select * from profiles where profilesID = :profilesID";
-$stmt=$pdo->prepare($sql2);
-$stmt->bindValue(':profilesID',7,PDO::PARAM_INT);
-$stmt->execute();
-while($data = $stmt->fetch()) {
-    var_dump($data);
+$stmt2=$pdo->prepare($sql2);
+$stmt2->bindValue(':profilesID',7,PDO::PARAM_INT);
+$stmt2->execute();
+$data=$stmt2->fetch(PDO::FETCH_ASSOC);
+foreach($data as $key){
+    echo $key."<br>";
 }
-//$ans = $stmt->fetchAll();
-//var_dump($ans);
-/*foreach($stmt->fetchAll()as $ar){
-    echo $ar;
-}*/
+
 ?>
 
 
