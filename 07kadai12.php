@@ -15,15 +15,54 @@ if(is_string($pdo)){
     echo $pdo;
     exit;
 }
-if(!empty($_POST["name"]) || !empty($_POST["age"]) || !empty($_POST["birthday"])){
+//if(!empty($_POST["name"]) || !empty($_POST["age"]) || !empty($_POST["birthday"])){
     //部分一致が知りたい
-    $sql = "select * from profiles where name = :name or age = :age or birthday = :birthday";
+    //ORだと、string型という概念が入ってしまってる
+    $sql = "select * from profiles where ";
+    if(!empty($_POST["name"]) && !empty($_POST["age"]) && !empty($_POST["birthday"])){
+    $sql .= "name like :name and birthday = :birthday and age = :age";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':name',$_POST["name"],PDO::PARAM_STR);
+    $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
     $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
     $stmt->bindValue(':birthday',$_POST["birthday"]);
+}
+    elseif(!empty($_POST["name"])&&(!empty($_POST["age"]))){
+        $sql .= "name like :name and age = :age";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
+        $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
+    }
+    elseif(!empty($_POST["name"]) && !empty($_POST["birthday"])){
+        $sql .= "name like :name and birthday = :birthday";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
+        $stmt->bindValue(':birthday',$_POST["birthday"]);
+    }
+    elseif(!empty($_POST["age"]) && !empty($_POST["birthday"])){
+        $sql .= "age = :age and birthday = :birthday";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
+        $stmt->bindValue(':birthday',$_POST["birthday"]);
+    }
+    elseif(!empty($_POST["age"])){
+        $sql .= "age = :age";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
+    }
+    elseif(!empty($_POST["name"])){
+    $sql .= "name like :name";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
+}
+    elseif(!empty($_POST["birthday"])){
+    $sql .= "birthday =:birthday";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':birthday',$_POST["birthday"]);
+}
+    
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
     if(empty($result)){
         echo "一致するデーターはありませんでした。";
     }else{
@@ -47,10 +86,10 @@ if(!empty($_POST["name"]) || !empty($_POST["age"]) || !empty($_POST["birthday"])
 
 
             echo "$title:$value"."<br>";
-        }  
+        }
     }
     }
-}
+//}
 
 
         ?>
