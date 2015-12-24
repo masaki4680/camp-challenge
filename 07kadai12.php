@@ -15,51 +15,53 @@ if(is_string($pdo)){
     echo $pdo;
     exit;
 }
-//if(!empty($_POST["name"]) || !empty($_POST["age"]) || !empty($_POST["birthday"])){
-    //•”•ªˆê’v‚ª’m‚è‚½‚¢
-    //OR‚¾‚ÆAstringŒ^‚Æ‚¢‚¤ŠT”O‚ª“ü‚Á‚Ä‚µ‚Ü‚Á‚Ä‚é
-    $sql = "select * from profiles where ";
-    if(!empty($_POST["name"]) && !empty($_POST["age"]) && !empty($_POST["birthday"])){
-    $sql .= "name like :name and birthday = :birthday and age = :age";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
-    $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
-    $stmt->bindValue(':birthday',$_POST["birthday"]);
+
+if(empty($_POST["name"]) && empty($_POST["age"]) && empty($_POST["birthday"])){
+    echo "‚Ç‚ê‚©“ü—Í‚µ‚Ä‚­‚¾‚³‚¢";
+}else{
+
+
+$sql = "select * from profiles where ";
+
+$flag = false;
+
+if(!empty($_POST["name"])) {
+    $sql .= "name like :name ";
+    $flag = true;
 }
-    elseif(!empty($_POST["name"])&&(!empty($_POST["age"]))){
-        $sql .= "name like :name and age = :age";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
-        $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
-    }
-    elseif(!empty($_POST["name"]) && !empty($_POST["birthday"])){
-        $sql .= "name like :name and birthday = :birthday";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
-        $stmt->bindValue(':birthday',$_POST["birthday"]);
-    }
-    elseif(!empty($_POST["age"]) && !empty($_POST["birthday"])){
-        $sql .= "age = :age and birthday = :birthday";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
-        $stmt->bindValue(':birthday',$_POST["birthday"]);
-    }
-    elseif(!empty($_POST["age"])){
+if(!empty($_POST["age"])){
+    if($flag == false){
         $sql .= "age = :age";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':age',$_POST["age"],PDO::PARAM_INT);
+        $flag = true;
+    }else{
+        $sql .= "and age = :age ";
+    } 
+}
+if(!empty($_POST["birthday"])){
+    if($flag == false){
+        $sql .= "birthday = :birthday";
+    }else{
+        $sql .= "and birthday = :birthday";
     }
-    elseif(!empty($_POST["name"])){
-    $sql .= "name like :name";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':name','%'.$_POST["name"].'%',PDO::PARAM_STR);
 }
-    elseif(!empty($_POST["birthday"])){
-    $sql .= "birthday =:birthday";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':birthday',$_POST["birthday"]);
+
+$stmt = $pdo->prepare($sql);
+
+
+
+
+if(!empty($_POST["name"])){
+    $stmt->bindValue(":name",'%'.$_POST["name"].'%');
 }
-    
+
+if(!empty($_POST["age"])){
+    $stmt->bindValue(":age",$_POST["age"]);
+}
+
+if(!empty($_POST["birthday"])){
+    $stmt->bindValue(":birthday",$_POST["birthday"]);
+}
+
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
@@ -88,8 +90,9 @@ if(is_string($pdo)){
             echo "$title:$value"."<br>";
         }
     }
+    
     }
-//}
+}
 
 
         ?>
