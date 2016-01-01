@@ -13,24 +13,63 @@
 //
 //※各テーブルの構成は各自の想像で作ってみてください。
 
-require_once("6config.php");
+// E_NOTICEエラー以外出力する
+error_reporting(E_ALL & ~E_NOTICE);
+
+function connectDb(){
+	$param = "mysql:dbname=challenge_db;host=localhost";
+	try{
+		//ここで行われた処置でエラーが発生したら
+
+		//この時の$pdoはローカル変数と定義
+		$pdo = new PDO($param,"root","46803980a");
+		return $pdo;
+	}catch(PDOException $e){
+		//ここに書いてある処理を行う。
+		return $e->getMessage();
+	}
+
+}
+
+$pdo =connectDb();
+
+if(is_string($pdo)){
+
+	echo $pdo;
+	exit;
+}
 
 
 Class user{
-    private $id;
-    private $password;
+
 
     //userid登録 password登録
-        public function setmen($input_id,$input_password){
-        $this->id = $input_id;
-        $this->password = $input_password;
-        $sql = "INSERT INTO com_user(id,password) values(:id,:password)";
+        public function setman($input_id,$input_password){
+
+        $sql = "INSERT INTO com_user(id,password)
+        		VALUES(:id,:password)";
         global $pdo;
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':id',$this->id);
-        $stmt->bindValue(':password',$this->password);
+        $stmt->bindValue(':id',$input_id);
+        $stmt->bindValue(':password',$input_password);
         $stmt->execute();
+
+
     }
+
+    //user確認
+       public function getuser($input_id,$input_password){
+
+       	$sql = "select * from com_user where id =:id and password =:password";
+       	global $pdo;
+       	$stmt = $pdo->prepare($sql);
+       	$stmt->bindValue(':id',$input_id);
+       	$stmt->bindValue(':password',$input_password);
+       	$stmt->execute();
+        $profile = $stmt->fetch(PDO::FETCH_ASSOC);
+
+       	return $profile ? $profile : false;
+       }
 }
 
 Class com{
@@ -67,7 +106,6 @@ Class com{
    public function editname($before_name,$after_name){
    	       $before = $before_name;
    	       $after = $after_name;
-   	       var_dump($before);
            $sql = "update com
            		   set
                    name = :name

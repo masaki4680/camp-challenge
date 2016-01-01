@@ -5,6 +5,16 @@
     </head>
     <body>
 <?php
+//¤•iíœ‹@”\
+
+session_start();
+
+if(!isset($_SESSION["confirm"])){
+
+	header("Location: ./6login.php");
+	exit;
+}
+
 require_once("6function.php");
 
 $name = $_GET["name"];

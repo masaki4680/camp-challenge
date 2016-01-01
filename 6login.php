@@ -6,33 +6,70 @@
     <body>
 
         <?php
+        //ログイン機能
 require_once("6function.php");
 
+session_start();
 
-if(empty($_POST['id']) || empty($_POST['password'])){
-    echo "もう一度記入してください";
-    ?>
-        <form name="user" action="6signin.php" method="post">
-            ID:<input type="text" name="id" placeholder="例:3"><br>
-            PASSWORD:<input type="text" name="password" placeholder="４桁で入力してください"><br>
-            <input type="submit" value="送信">
-        </form>
-<?php
+if($_SERVER["REQUEST_METHOD"] != 'POST'){
+//初回アクセス
+echo "ログイン情報を入力して下さい";
+}
+else{
+	$input_id = $_POST["id"];
+	$input_password = $_POST["password"];
 
-}else{
-$user = new user;
-$user->setmen($_POST['id'],$_POST['password']);
-echo "登録が完了しました。<br>";
-?>
-商品を登録してください。<br>
-<form name="com" action="6signin.php" method="post">
-    商品名:<input type="text" name="name"
-placeholder="例：タランチュラ">
-<input type="submit" value="送信"></form>
+	$err = array();
 
-<?php
-    }
-?>
+	if(empty($input_id)){
+		$err["id"] = "入力されていません";
+	}
+
+	if(empty($input_password)){
+		$err["password"] = "入力されていません";
+	}
+	//両方、何等か入ってる場合
+	if($input_id && $input_password){
+		$user = new user;
+		//Falseなら
+		if(!$user->getuser($input_id,$input_password)){
+			$err["password"] = "IDかPASSWORDどちらか間違ってます";
+		}
+	}
+
+	if(empty($err)){
+
+		$user = new user;
+		$result = $user->getuser($input_id,$input_password);
+
+		$_SESSION["confirm"] = $result;
+
+         header("Location: ./6index.php");
+         exit;
+	}
+}
+	?>
+	<form name="user" method="post">
+
+<div class="form-id">
+     <input class="form-id" type="text" name="id" value="" placeholder="ID" />
+    <span style="color:#ff0000;" class="help-block"><?php echo $err["id"]; ?></span>
+</div>
+
+
+
+<div class="form-password">
+    <input class="form-password" type="text" name="password" value="" placeholder="パスワード">
+    <span style="color:#ff0000;" class="help-block"><?php echo $err["password"]; ?></span>
+</div>
+
+<div class="form-submit">
+     <input type="submit" value="ログイン">
+</div>
+
+</form>
+
+
 
 
     </body>
