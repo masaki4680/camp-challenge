@@ -21,6 +21,9 @@
     session_start();
     $name = $_SESSION['name'];
     $birthday = $_SESSION['birthday'];
+    $year = $_SESSION['year'];
+    $month = $_SESSION['month'];
+    $day = $_SESSION['day'];
     $type = $_SESSION['type'];
     $tell = $_SESSION['tell'];
     $comment = $_SESSION['comment'];
@@ -28,7 +31,11 @@
     //db接続を確立
     $insert_db = connect2MySQL();
 
-    $insert_result = insert($name,$birthday,$type,$tell,$comment);
+    //dbにinsertする
+    $result = insert($insert_db,$name,$birthday,$tell,$type,$comment);
+
+    //接続オブジェクトを初期化することでDB接続を切断
+    $insert_db=null;
     ?>
 
     <h1>登録結果画面</h1><br>
@@ -38,6 +45,15 @@
     電話番号:<?php echo $tell;?><br>
     自己紹介:<?php echo $comment;?><br>
     以上の内容で登録しました。<br>
+
+    <?php unset($name); ?>
+    <?php unset($year); ?>
+    <?php unset($month); ?>
+    <?php unset($birthday); ?>
+    <?php unset($day); ?>
+    <?php unset($type); ?>
+    <?php unset($tell); ?>
+    <?php unset($comment); ?>
 
     <?php echo return_top(); ?>
 

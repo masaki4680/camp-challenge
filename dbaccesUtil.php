@@ -4,14 +4,24 @@
 function connect2MySQL(){
     try{
         $pdo = new PDO('mysql:host=localhost;dbname=challenge_db;charset=utf8','root','46803980a');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
         return $pdo;
     } catch (PDOException $e) {
         die('接続に失敗しました。次記のエラーにより処理を中断します:'.$e->getMessage());
     }
+
+
+
 }
 
-function insert($name,$birthday,$tell,$type,$comment){
+
+function insert($insert_db,$name,$birthday,$tell,$type,$comment){
 	//DBに全項目のある1レコードを登録するSQL
+
+	try{
+		//トランザクションを開始
+		$insert_db->beginTransaction();
+	    //データーの挿入
 	$insert_sql = "INSERT INTO user_t(name,birthday,tell,type,comment,newDate)"
 			. "VALUES(:name,:birthday,:tell,:type,:comment,:newDate)";
 
@@ -29,6 +39,12 @@ function insert($name,$birthday,$tell,$type,$comment){
 	//SQLを実行
 	$insert_query->execute();
 
-	//接続オブジェクトを初期化することでDB接続を切断
-	$insert_db=null;
+	//トランザクションをコミット
+	$insert_db->commit();
+
+	}catch(PDOException $e){
+		//エラーが発生して例外が投げられたらロールバックする
+		$insert_db->rollback();
+		die("データーの挿入に失敗しました:".$e->getMessage());
+	}
 }

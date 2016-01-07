@@ -11,8 +11,9 @@
     <?php
 
     //課題3　!emptyの年月日が入ってない
-    if(!empty($_POST['name']) && !empty($_POST['year']) && !empty($_POST['type'])
-            && !empty($_POST['tell']) && !empty($_POST['comment']) && !empty($_POST['year']) && !empty($_POST['month']) && !empty($_POST['day'])){
+    if(!empty($_POST['name']) && !empty($_POST['type']) && !empty($_POST['tell']) && !empty($_POST['comment']) && !empty($_POST['year']) && !empty($_POST['month']) && !empty($_POST['day']))
+
+    {
 
         $post_name = $_POST['name'];
         //date型にするために1桁の月日を2桁にフォーマットしてから格納
@@ -24,6 +25,8 @@
         $post_month = $_POST['month'];
         $post_day = $_POST['day'];
 
+
+
         //セッション情報に格納
         session_start();
         $_SESSION['name'] = $post_name;
@@ -34,6 +37,7 @@
         $_SESSION['type'] = $post_type;
         $_SESSION['tell'] = $post_tell;
         $_SESSION['comment'] = $post_comment;
+
     ?>
 
         <h1>登録確認画面</h1><br>
@@ -50,13 +54,60 @@
           <input type="hidden" name="hidden" value="security">
         </form>
         <form action="<?php echo INSERT ?>" method="POST">
-            <input type="hidden" name="hidden" value="japan">
-            <input type="submit" name="no" value="登録画面に戻る">
+            <input type="submit" name="no" value="登録画面に戻る" >
         </form>
 
     <?php }else{ ?>
+
         <h1>入力項目が不完全です</h1><br>
         再度入力を行ってください
+
+        <?php
+           session_start();
+
+           if(!empty($_POST['name'])){
+           	$_SESSION['name'] = $_POST['name'];
+           }else{
+           	unset($_SESSION['name']);
+           }
+
+           if(!empty($_POST['year'])){
+           	$_SESSION['year'] = $_POST['year'];
+           }else{
+           	unset($_SESSION['year']);
+           }
+
+           if(!empty($_POST['month'])){
+           	$_SESSION['month'] = $_POST['month'];
+           }else{
+           	unset($_SESSION['month']);
+           }
+
+           if(!empty($_POST['day'])){
+           	$_SESSION['day'] = $_POST['day'];
+           }else{
+           	unset($_SESSION['day']);
+           }
+
+           if(!empty($_POST['type'])){
+           	$_SESSION['type'] = $_POST['type'];
+           }else{
+           	unset($_SESSION['type']);
+           }
+
+           if(!empty($_POST['tell'])){
+           	$_SESSION['tell'] = $_POST['tell'];
+           }else{
+           	unset($_SESSION['tell']);
+           }
+
+           if(!empty($_POST['comment'])){
+           	$_SESSION['comment'] = $_POST['comment'];
+           }else{
+           	unset($_SESSION['comment']);
+           }
+
+        ?>
         <form action="<?php echo INSERT ?>" method="POST">
             <input type="submit" name="no" value="登録画面に戻る">
         </form>

@@ -12,7 +12,7 @@
 //初回入力
 
 
-if(empty($_POST["hidden"])){
+if($_SERVER['REQUEST_METHOD'] != 'POST'){
 	?>
 <form action="<?php echo INSERT_CONFIRM ?>" method="POST">
 名前:
@@ -70,13 +70,32 @@ exit;
 <?php
 session_start();
 
-$name = $_SESSION['name'];
-$tell = $_SESSION['tell'];
+if(!empty($_SESSION['name'])){
+	$name = $_SESSION['name'];
+}
+
+if(!empty($_SESSION['tell'])){
+	$tell = $_SESSION['tell'];
+}
+
+if(!empty($_SESSION['comment'])){
+	$comment = $_SESSION['comment'];
+}
+
+if(!empty($_SESSION['year'])){
+	$year = $_SESSION['year'];
+}
+
+if(!empty($_SESSION['month'])){
+	$month = $_SESSION['month'];
+}
+
+if(!empty($_SESSION['day'])){
+	$day = $_SESSION['day'];
+}
+
 $type = $_SESSION['type'];
-$comment = $_SESSION['comment'];
-$year = $_SESSION['year'];
-$month = $_SESSION['month'];
-$day = $_SESSION['day'];
+
 ?>
     <form action="<?php echo INSERT_CONFIRM ?>" method="POST">
     名前:
@@ -85,24 +104,39 @@ $day = $_SESSION['day'];
 
     生年月日:　
     <select name="year">
-        <option value="" ><?php if(!empty($year)){echo $year;}else{echo "----";}?></option>
+        <option value="" >----</option>
         <?php
-        for($i=1950; $i<=2010; $i++){ ?>
-        <option value="<?php echo $i;?>"><?php echo $i;?></option>
+        for($i=1950; $i<=2010; $i++){
+        	$stop = "";
+        ?>
+        <?php if($i == $year){
+        	$stop = "selected";}
+        	?>
+        <option value="<?php echo $i;?>" <?php echo $stop; ?> ><?php echo $i;?></option>
         <?php } ?>
     </select>年
     <select name="month">
-        <option value="" ><?php if(!empty($month)){echo $month;}else{echo "--";}?></option>
+        <option value="" >--</option>
         <?php
-        for($i = 1; $i<=12; $i++){?>
-        <option value="<?php echo $i;?>"><?php echo $i;?></option>
+        for($i = 1; $i<=12; $i++){
+        	$stop = "";
+        ?>
+        <?php  if($i == $month){
+        	$stop = "selected";}
+        ?>
+        <option value="<?php echo $i;?>" <?php echo $stop; ?>><?php echo $i;?></option>
         <?php } ;?>
     </select>月
     <select name="day">
-        <option value="" ><?php if(!empty($day)){echo $day;}else{echo "--";}?></option>
+        <option value="" >--</option>
         <?php
-        for($i = 1; $i<=31; $i++){ ?>
-        <option value="<?php echo $i; ?>"><?php echo $i;?></option>
+        for($i = 1; $i<=31; $i++){
+        	$stop = "";
+        	?>
+        	        <?php  if($i == $day){
+        	        	$stop = "selected";}
+        	 ?>
+        <option value="<?php echo $i; ?>" <?php echo $stop;?>><?php echo $i;?></option>
         <?php } ?>
     </select>日
     <br><br>
