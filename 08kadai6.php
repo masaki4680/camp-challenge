@@ -5,31 +5,35 @@ require_once("08kadai3.php");
 
 $pdo = connectDb();
 
+
+
 Class human extends base{
 	private $table;
+	private $result;
     //‰Šúˆ—
-	function constract(){
+
+
+
+
+
+	function __constract(){
 		$this->table = "human";
 	}
-	//Œp³{Œãˆ—
-	function load(){
+
+// 	Œp³{Œãˆ—
+	 function load(){
 		$human = $this->table;
-		$sql = "select * from". $human;
+		$sql = "select * from ". $human;
 		global $pdo;
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute();
+		$this->result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 	//Œãˆ—
 	function show(){
-		$human = $this->table;
-		$sql = "select * from". $human;
-		global $pdo;
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute();
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		foreach($result as $key){
+		foreach($this->result as $key){
              foreach($key as $value){
-             	 echo $value;
+             	 echo $value ."<br>";
              }
 		}
 	}
@@ -38,29 +42,26 @@ Class human extends base{
 
 Class station extends base{
 	private $table;
+	private $result;
 
-	function constract(){
+	function __constract(){
 		$this->table= "station";
 	}
 	//Œp³{Œãˆ—
 	function load(){
 		$station = $this->table;
-		$sql = "select * from".$station;
+		$sql = "select * from ".$station;
 		global $pdo;
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute();
+		$this->result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	function show(){
-		$human = $this->table;
-		$sql = "select * from". $human;
-		global $pdo;
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute();
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		foreach($result as $key){
+
+		foreach($this->result as $key){
 			foreach($key as $value){
-				echo $value;
+				echo $value ."<br>";
 			}
 		}
 	}
@@ -68,7 +69,16 @@ Class station extends base{
 
 
 
-$answer = human();
-$answer->constract();
-$answer->show();
+$human =new human();
+$human->__constract();
+$human->load();
+$human->show();
+
+echo "<br>";
+
+$station = new station();
+$station->__constract();
+$station->load();
+$station->show();
+
 
