@@ -8,6 +8,7 @@
       <title>ユーザー情報検索画面</title>
 </head>
   <body>
+ 
 <!--   GET→POSTに変更-->
     <form action="<?php echo SEARCH_RESULT ?>" method="POST">
         
@@ -31,8 +32,9 @@
         <br>
         <?php
         for($i = 1; $i<=3; $i++){ ?>
-        <input type="radio" name="type" value="<?php echo $i; ?>"><?php echo ex_typenum($i);?><br>
-        <?php } ?>
+        <input type="radio" name="type" value="<?php  echo $i; ?>"><?php echo ex_typenum($i);?><br>
+        <?php }
+        ?>
         <br>
         <input type="submit" name="btnSubmit" value="検索">
       </form>

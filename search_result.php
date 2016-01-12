@@ -20,9 +20,13 @@ require_once './dbaccesUtil.php';
             </tr>
         <?php
         $result = null;
-//(GETをPOSTに変更) 
+//タイプが何も入力されなかった時に、nullを空文字に変換
+if(!isset($_POST['type'])){
+    $_POST['type'] = "";
+}
+
         if(empty($_POST['name']) && empty($_POST['year']) && empty($_POST['type'])){
-            
+
             $result = serch_all_profiles();
             
         }else{

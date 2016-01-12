@@ -127,10 +127,37 @@ function serch_profiles($name=null,$year=null,$type=null){
     return $seatch_query->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function update_profile($id,$name,$birthday,$type,$tell,$comment){
+    //db接続を確立
 
+    $detail_db = connect2MySQL();
+    
+    $detail_sql = "UPDATE user_t SET name = :name,birthday = :birthday,type = :type,tell = :tell,comment = :comment  WHERE userID = $id";
+    
+    $detail_query = $detail_db->prepare($detail_sql);
+    
+    $detail_query->bindValue(':name',$name);
+    $detail_query->bindValue(':birthday',$birthday);
+    $detail_query->bindValue(':type',$type);
+    $detail_query->bindValue(':tell',$tell);
+    $detail_query->bindValue(':comment',$comment);
+    
+    try{
+        $detail_query->execute();
+    } catch (PDOException $e) {
+        $detail_query=null;
+        return $e->getMessage();
+    }
+
+    //レコードを連想配列として返却
+    $insert_db=null;
+    return null;
+    
+}
 
 function profile_detail($id){
     //db接続を確立
+    
     $detail_db = connect2MySQL();
     
     $detail_sql = "SELECT * FROM user_t WHERE userID=:id";
