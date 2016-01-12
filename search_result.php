@@ -19,19 +19,14 @@ require_once './dbaccesUtil.php';
                 <th>登録日時</th>
             </tr>
         <?php
-        $result = null;
-//タイプが何も入力されなかった時に、nullを空文字に変換
+
+//タイプが何も入力されなかった時に、nullを空文字に変換 ロジックはわからない
 if(!isset($_POST['type'])){
     $_POST['type'] = "";
 }
 
-        if(empty($_POST['name']) && empty($_POST['year']) && empty($_POST['type'])){
+$result = serch_profiles($_POST['name'],$_POST['year'],$_POST['type']);
 
-            $result = serch_all_profiles();
-            
-        }else{
- $result = serch_profiles($_POST['name'],$_POST['year'],$_POST['type']);
-        }
         foreach($result as $value){
         ?>
             <tr>
