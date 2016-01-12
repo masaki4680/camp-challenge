@@ -21,7 +21,7 @@ function insert_profiles($name, $birthday, $type, $tell, $comment){
     $insert_sql = "INSERT INTO user_t(name,birthday,tell,type,comment,newDate)"
             . "VALUES(:name,:birthday,:tell,:type,:comment,:newDate)";
 
-    //現在時をdatetime型で取得
+    //現在時をdatetime型で取得　★重要
     $datetime =new DateTime();
     $date = $datetime->format('Y-m-d H:i:s');
 
@@ -80,9 +80,8 @@ function serch_all_profiles(){
 function serch_profiles($name=null,$year=null,$type=null){
     //db接続を確立
     $search_db = connect2MySQL();
-    
-    
     $search_sql = "SELECT * FROM user_t";
+    
     $flag = false;
     if(!empty($name)){
         $search_sql .= " WHERE name like :name";
@@ -105,6 +104,7 @@ function serch_profiles($name=null,$year=null,$type=null){
     
     //クエリとして用意
     $seatch_query = $search_db->prepare($search_sql);
+    
     if(!empty($name)){
         $seatch_query->bindValue(':name','%'.$name.'%');
     }
@@ -114,6 +114,7 @@ function serch_profiles($name=null,$year=null,$type=null){
     if(!empty($type)){
         $seatch_query->bindValue(':type',$type);
     }
+    
     
     //SQLを実行
     try{
@@ -150,7 +151,7 @@ function update_profile($id,$name,$birthday,$type,$tell,$comment){
     }
 
     //レコードを連想配列として返却
-    $insert_db=null;
+    $detail_db=null;
     return null;
     
 }
@@ -183,7 +184,7 @@ function delete_profile($id){
     //db接続を確立
     $delete_db = connect2MySQL();
     
-    $delete_sql = "DELEtE * FROM user_t WHERE userID=:id";
+    $delete_sql = "delete FROM user_t WHERE userID=:id";
     
     //クエリとして用意
     $delete_query = $delete_db->prepare($delete_sql);
@@ -197,5 +198,6 @@ function delete_profile($id){
         $delete_query=null;
         return $e->getMessage();
     }
+    $delete_db = null;
     return null;
 }

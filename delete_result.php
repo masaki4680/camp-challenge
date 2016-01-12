@@ -24,5 +24,4 @@ require_once './dbaccesUtil.php';
     echo return_top(); 
     ?>
    </body> 
-</body>
 </html>
