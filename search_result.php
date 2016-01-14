@@ -21,9 +21,8 @@ require_once './dbaccesUtil.php';
         <?php
 
 //タイプが何も入力されなかった時に、nullを空文字に変換 ロジックはわからない
-if(!isset($_POST['type'])){
-    $_POST['type'] = "";
-}
+//$_POST['type']がundefindの時のエラー処理
+error_reporting(E_ALL ^ E_NOTICE);
 
 $result = serch_profiles($_POST['name'],$_POST['year'],$_POST['type']);
 
