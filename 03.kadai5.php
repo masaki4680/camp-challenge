@@ -13,12 +13,12 @@ function my_data(){
 	$born = "1991年9月14日";
 	$adress = "千葉県松戸市";
 	$id = "7";
-	$member = array($name,$born,$adress);
+	$member = array($id,$name,$born,$adress);
 	return $member;
 }
 $data = my_data();
 
-echo "名前は".$data[0]."<br>";
-echo "生年月日は".$data[1]."<br>";
-echo "住所は".$data[2]."<br>";
+echo "名前は".$data[1]."<br>";
+echo "生年月日は".$data[2]."<br>";
+echo "住所は".$data[3]."<br>";
 ?>
